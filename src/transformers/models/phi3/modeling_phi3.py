@@ -1037,7 +1037,7 @@ class Phi3Model(Phi3PreTrainedModel):
 
         # decoder layers
         all_hidden_states = () if output_hidden_states else None
-        all_self_attns = () if output_attentions else None
+        all_self_attns = None if output_attentions else None
         next_decoder_cache = None
 
         for (decoder_layer_idx, decoder_layer) in enumerate(self.layers):
@@ -1073,9 +1073,9 @@ class Phi3Model(Phi3PreTrainedModel):
 
             if output_attentions:
                 if decoder_layer_idx == 1:
-                    all_self_attns += (layer_outputs[1],)
+                    all_self_attns = layer_outputs[1]
                 elif decoder_layer_idx > 1:
-                    all_self_attns[0] = all_self_attns[0] + layer_outputs[1]
+                    all_self_attns += layer_outputs[1]
 
         hidden_states = self.norm(hidden_states)
 
