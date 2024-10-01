@@ -1076,7 +1076,9 @@ class Phi3Model(Phi3PreTrainedModel):
                     all_self_attns = layer_outputs[1]
                 elif decoder_layer_idx > 1:
                     all_self_attns += layer_outputs[1]
-                print(decoder_layer_idx)
+                
+                if decoder_layer_idx == len(self.layers):
+                    all_self_attns /= (decoder_layer_idx - 1)
 
         hidden_states = self.norm(hidden_states)
 
